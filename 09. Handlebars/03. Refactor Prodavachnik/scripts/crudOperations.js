@@ -83,13 +83,14 @@ function listAdverts() {
             adverts
         };
         let html = templates['catalog'](context);
-        let editBtns = $(html).find('.ad-box').find('.edit');
-        let deleteBtns = $(html).find('.ad-box').find('.delete');
-
-        editBtns.click(loadAdvertForEdit($(this).attr("data-id")));
-        deleteBtns.click(deleteAdvert($(this).attr("data-id")));
-
         content.html(html);
+        let editBtn = $(content).find('.ad-box').find('.edit');
+        let deleteBtn = $(content).find('.ad-box').find('.delete');
+        let readBtn = $(content).find('.ad-box').find('.read');
+        editBtn.click(loadAdvertForEdit);
+        deleteBtn.click(deleteAdvert);
+        readBtn.click(displayAdvert);
+
     }
 }
 
@@ -129,10 +130,11 @@ function createAdvert() {
     }
 }
 
-function loadAdvertForEdit(advertId) {
+function loadAdvertForEdit() {
+    let id = $(this).parent().attr('data-id');
     $.ajax({
         method: 'GET',
-        url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + advertId,
+        url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + id,
         headers: {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')},
         success: loadAdvertForEditSuccess,
         error: handleAjaxError
@@ -151,10 +153,11 @@ function loadAdvertForEdit(advertId) {
     }
 }
 
-function displayAdvert(advertId){
+function displayAdvert(){
+    let id = $(this).parent().attr('data-id');
     $.ajax({
         method: 'GET',
-        url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + advertId,
+        url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + id,
         headers: {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')},
         success: displayAdvertSuccess,
         error: handleAjaxError
@@ -209,10 +212,11 @@ function editAdvert() {
     }
 }
 
-function deleteAdvert(advertId) {
+function deleteAdvert() {
+    let id = $(this).parent().attr('data-id');
     $.ajax({
         method: 'DELETE',
-        url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + advertId,
+        url: BASE_URL + 'appdata/' + APP_KEY + '/adverts/' + id,
         headers: {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')},
         success: deleteBookSuccess,
         error: handleAjaxError

@@ -3,5 +3,4 @@ function startApp() {
     showView('viewHome');
     loadTemplates();
     attachEvents();
-
 }
