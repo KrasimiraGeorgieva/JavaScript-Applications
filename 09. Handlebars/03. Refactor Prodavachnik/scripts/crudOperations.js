@@ -2,6 +2,18 @@ const BASE_URL = 'https://baas.kinvey.com/';
 const APP_KEY = 'kid_B1R2vLpcG';
 const APP_SECRET = '36cf4dd7e6c449ea88223aa8f0155c03';
 const AUTH_HEADERS = {'Authorization': "Basic " + btoa(APP_KEY + ":" + APP_SECRET)};
+const templates = {};
+
+async function loadTemplates() {
+    const [adsCatalogTemplate, adBoxTemplate]
+        = await Promise.all([
+        $.get('./templates/ads-catalog.html'),
+        $.get('./templates/ad-box-partial.html')
+    ]);
+
+    templates['catalog'] = Handlebars.compile(adsCatalogTemplate);
+    Handlebars.registerPartial('adBox', adBoxTemplate);
+}
 
 function registerUser() {
     let form = $('#formRegister');
@@ -50,9 +62,10 @@ function loginUser() {
 }
 
 function listAdverts() {
-    $('#ads').empty();
+    let content = $('#content');
+    content.empty();
     showView('viewAds');
-    $.ajax({
+    let ads = $.ajax({
         method: 'GET',
         url: BASE_URL + 'appdata/' + APP_KEY + '/adverts',
         headers: {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')},
@@ -60,52 +73,23 @@ function listAdverts() {
         error: handleAjaxError
     });
 
-    function loadAdvertsSuccess(adverts) {
-        showInfo('Advertisements loaded.');
-        if (adverts.length === 0) {
-            $('#ads').text('No advertisements available.');
-        } else {
-            let advertsTable = $('<table>')
-                .append($('<tr>').append(
-                    '<th>Title</th>',
-                    '<th>Description</th>',
-                    '<th>Publisher</th>',
-                    '<th>Date Published</th>',
-                    '<th>Price</th>',
-                    '<th>Actions</th>')
-                );
-
-            for (let advert of adverts) {
-                let readMoreLink = $(`<a data-id="${advert._id}" href="#">[Read More]</a>`)
-                    .on('click', function () {
-                        displayAdvert($(this).attr("data-id"))
-                    });
-                let links = [readMoreLink];
-
-                if (advert._acl.creator === sessionStorage['userId']) {
-                    let deleteLink = $(`<a data-id="${advert._id}" href="#">[Delete]</a>`)
-                        .on('click', function () {
-                            deleteAdvert($(this).attr("data-id"))
-                        });
-                    let editLink = $(`<a data-id="${advert._id}" href="#">[Edit]</a>`)
-                        .on('click', function () {
-                            loadAdvertForEdit($(this).attr("data-id"))
-                        });
-                    links = [readMoreLink, ' ', deleteLink, ' ', editLink];
-                }
-
-                advertsTable.append($('<tr>').append(
-                    $('<td>').text(advert.title),
-                    $('<td>').text(advert.description),
-                    $('<td>').text(advert.publisher),
-                    $('<td>').text(advert.datePublished),
-                    $('<td>').text(advert.price),
-                    $('<td>').append(links)
-                ));
+    function loadAdvertsSuccess(adverts){
+        adverts.forEach(a => {
+            if (a._acl.creator === sessionStorage['userId']) {
+                a.isAuthor = true;
             }
+        });
+        let context = {
+            adverts
+        };
+        let html = templates['catalog'](context);
+        let editBtns = $(html).find('.ad-box').find('.edit');
+        let deleteBtns = $(html).find('.ad-box').find('.delete');
 
-            $('#ads').append(advertsTable);
-        }
+        editBtns.click(loadAdvertForEdit($(this).attr("data-id")));
+        deleteBtns.click(deleteAdvert($(this).attr("data-id")));
+
+        content.html(html);
     }
 }
 
