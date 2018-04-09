@@ -4,11 +4,11 @@
             <span class="titlebar">{{name}} details</span>
             <span class="spanner">Team members</span>
             <div>
-                {{#each members}}
+                {{#if members}}
                     {{> teamMember}}
                 {{else}}
                     <p>No member info</p>
-                {{/each}}
+                {{/if}}
             </div>
             <span class="spanner">Description</span>
             {{#if comment}}

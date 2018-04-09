@@ -20,7 +20,7 @@ let auth = (() => {
     }
 
     // user/register
-    function register(username, password, repeatPassword) {
+    function register(username, password) {
         let userData = {
             username,
             password
@@ -39,7 +39,7 @@ let auth = (() => {
     }
 
     function handleError(reason) {
-        showError(reason.responseJSON.description);
+        showError(reason.responseJSON.comment);
     }
 
     function showInfo(message) {
