@@ -29,6 +29,7 @@
     text-align: center;
     padding: 5px;
     border-radius: 3px;
+    display: none;
 }
 
 #loadingBox {
