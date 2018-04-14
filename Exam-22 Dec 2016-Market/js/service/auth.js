@@ -3,11 +3,11 @@ let auth = (() => {
         return sessionStorage.getItem('authtoken') !== null;
     }
 
-    function saveSession(userData) {
-        sessionStorage.setItem('authtoken', userData._kmd.authtoken);
-        sessionStorage.setItem('username', userData.username);
-        sessionStorage.setItem('userId', userData._id);
-        sessionStorage.setItem('name', userData.name);
+    function saveSession(userInfo) {
+        sessionStorage.setItem('authtoken', userInfo._kmd.authtoken);
+        sessionStorage.setItem('username', userInfo.username);
+        sessionStorage.setItem('userId', userInfo._id);
+        sessionStorage.setItem('name', userInfo.name);
     }
 
 
