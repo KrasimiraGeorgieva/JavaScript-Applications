@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DonUni</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./styles/styles.css">
+
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./node_modules/handlebars/dist/handlebars.min.js"></script>
+    <script src="./node_modules/sammy/lib/sammy.js"></script>
+    <script src="./node_modules/sammy/lib/plugins/sammy.handlebars.js"></script>
+    <script src="./node_modules/popper.js/dist/umd/popper.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+    <script src="./scripts/remote.js"></script>
+    <script src="./scripts/notify.js"></script>
+
+    <script src="./scripts/services/auth-service.js"></script>
+    <script src="./scripts/services/causes-service.js"></script>
+    <script src="./scripts/app.js"></script>
+
+    <script src="./scripts/handlers/auth-handler.js"></script>
+    <script src="./scripts/handlers/home-handler.js"></script>
+
+</head>
+
+<body>
+
+    <section id="notifications">
+        <div class="p-3 mb-2 bg-success w-50 text-white text-center" id="successNotification"><span>Success</span></div>
+        <div class="p-3 mb-2 bg-danger w-50 text-white text-center" id="errorNotification"><span>Error</span></div>
+        <div class="p-3 mb-2 bg-info w-50 text-white text-center" id="loadingNotification"><span>Loading...</span></div>
+    </section>
+
+    <div id="container">
+
+    </div>
+</body>
+
+</html>

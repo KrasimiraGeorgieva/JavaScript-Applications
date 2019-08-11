@@ -1,0 +1,11 @@
+{{> header}}
+<div style="margin-top:3%; padding-top: 3%;" class="container">
+    {{#if noCauses}}
+    <h1 class="text-center">NO CAUSES :(</h1>
+    {{else}}
+        {{#each causes}}
+            {{> causePartial}}
+            {{/each}}
+    {{/if}}
+</div>
+{{> footer}}
